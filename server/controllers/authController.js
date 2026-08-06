@@ -1,5 +1,5 @@
 import User from "../models/User.js";
-import bcrypt from `bcryp`;
+import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
 //Generate JWT Token
@@ -69,9 +69,9 @@ export const login = async (req, res) => {
 // Get current user
 export const getUser = async (req, res) => {
     try{
-        const user= await user.findById(req.userId).select("-password");
+        const user = await User.findById(req.userId).select("-password");
         if(!user){
-            return res.status(400).json((success:false,message:"user not found"))
+            return res.status(400).json({success:false,message:"user not found"})
 
         }
 
@@ -84,5 +84,3 @@ export const getUser = async (req, res) => {
 
     }
 }
-
-

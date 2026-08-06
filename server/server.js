@@ -3,6 +3,7 @@ import cors from "cors";
 import "dotenv/config";
 import connectDB from "./config/db.js";
 import authRouter from "./routes/authRoutes.js";
+import rankRouter from "./routes/rankRoutes.js";
 
 console.log("MONGODB_URI =", process.env.MONGODB_URI);
 
@@ -18,6 +19,7 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/auth",authRouter)
+app.use("/api/rank",rankRouter)
 
 const PORT = process.env.PORT || 5000;
 
