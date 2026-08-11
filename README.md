@@ -221,44 +221,42 @@ npm
 
 SEO-Rank-Tracker/
 │
-├── Client/
-│   │
+├── Client/                         # React + TypeScript frontend
 │   ├── src/
 │   │   ├── pages/
-│   │   │   ├── Analyze.tsx
-│   │   │   ├── Dashboard.tsx
-│   │   │   ├── History.tsx
-│   │   │   └── Report.tsx
+│   │   │   ├── Analyze.tsx        # Website SEO analysis
+│   │   │   ├── Dashboard.tsx      # SEO dashboard
+│   │   │   ├── History.tsx        # Previous analyses
+│   │   │   └── Report.tsx         # SEO reports
 │   │   │
 │   │   └── ...
 │   │
 │   ├── package.json
 │   └── ...
 │
-├── server/
-│   │
+├── server/                        # Node.js + Express backend
 │   ├── config/
-│   │   └── db.js
+│   │   └── db.js                  # MongoDB connection
 │   │
 │   ├── controllers/
-│   │   └── analysisController.js
+│   │   └── analysisController.js  # Analysis business logic
 │   │
 │   ├── cron/
-│   │   └── rankTrackingCron.js
+│   │   └── rankTrackingCron.js    # Automated rank tracking
 │   │
 │   ├── models/
-│   │   └── Analysis.js
+│   │   └── Analysis.js            # MongoDB analysis model
 │   │
 │   ├── routes/
-│   │   └── analysisRoutes.js
+│   │   └── analysisRoutes.js      # Analysis API routes
 │   │
 │   ├── services/
-│   │   ├── geminiService.js
-│   │   └── scraperService.js
+│   │   ├── geminiService.js       # Gemini AI integration
+│   │   └── scraperService.js      # Website scraping
 │   │
 │   ├── package.json
 │   ├── package-lock.json
-│   └── server.js
+│   └── server.js                  # Express server entry point
 │
 ├── .gitignore
 └── README.md
