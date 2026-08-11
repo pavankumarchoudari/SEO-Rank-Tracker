@@ -1,16 +1,11 @@
 import express from "express";
 import cors from "cors";
 import "dotenv/config";
-import connectDB from "./config/db.js";
 
+import connectDB from "./config/db.js";
 import authRouter from "./routes/authRoutes.js";
 import rankRouter from "./routes/rankRoutes.js";
 import analysisRouter from "./routes/analysisRoutes.js";
-import {startRankTrackingCron} from "./cron/rankTrackingCron.js";
-
-console.log("MONGODB_URI =", process.env.MONGODB_URI);
-
-connectDB();
 
 const app = express();
 
@@ -18,20 +13,24 @@ app.use(cors());
 app.use(express.json());
 
 app.get("/", (req, res) => {
-    res.send("Server is running");
+    res.send("SEO Rank Tracker API is running");
 });
 
 app.use("/api/auth", authRouter);
 app.use("/api/rank", rankRouter);
 app.use("/api/analysis", analysisRouter);
 
-// start cron jobs
-startRankTrackingCron()
+// Connect to MongoDB
+connectDB();
 
-const PORT = process.env.PORT || 5000;
+// Run local server only when not deployed on Vercel
+if (!process.env.VERCEL) {
+    const PORT = process.env.PORT || 5000;
 
-app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
-});
+    app.listen(PORT, () => {
+        console.log(`Server running on port ${PORT}`);
+    });
+}
 
-console.log(JSON.stringify(process.env.MONGODB_URI));
+// Export Express app for Vercel
+export default app;
