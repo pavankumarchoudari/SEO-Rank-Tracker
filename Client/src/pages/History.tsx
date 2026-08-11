@@ -61,7 +61,7 @@ export default function History() {
             console.error("Failed to delete ",err);
 
         }
-        serDeleting(null)
+        setDeleting(null)
     };
 
     const getScoreClass = (s: number) => {
