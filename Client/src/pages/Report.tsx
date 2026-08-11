@@ -3,7 +3,8 @@ import { useParams, Link } from "react-router-dom";
 import ScoreGauge from "../components/ScoreGauge";
 import IssueCard from "../components/IssueCard";
 import { ArrowLeft, Globe, Clock, FileText, Image, Link2, Heading, Tag, AlertCircle, ExternalLink, Type, Search } from "lucide-react";
-import { dummyWebsiteAnalysis } from "../assets/assets";
+
+import { useApp } from "../context/AppContext";
 
 interface AnalysisData {
     _id: string;
@@ -56,17 +57,51 @@ interface AnalysisData {
 }
 
 export default function Report() {
-    const { id } = useParams();
+    const { api } = useApp();
+    const { id } = useParams<{ id: string }>();
+
     const [analysis, setAnalysis] = useState<AnalysisData | null>(null);
     const [loading, setLoading] = useState(true);
-    const [error] = useState("");
+    const [error, setError] = useState("");
     const [activeTab, setActiveTab] = useState("overview");
 
     const fetchAnalysis = async () => {
-        setTimeout(() => {
-            setAnalysis(dummyWebsiteAnalysis);
-            setLoading(false);
-        }, 1500);
+        try {
+            if (!id) {
+                setError("Analysis ID is missing");
+                setLoading(false);
+                return;
+            }
+
+            console.log("Fetching analysis:", id);
+
+            const res = await api.get(`/api/analysis/${id}`);
+
+            console.log("Analysis response:", res.data);
+
+            if (res.data.success) {
+                if (res.data.analysis.status === "processing") {
+                    setTimeout(fetchAnalysis, 2000);
+                    return;
+                }
+
+                setAnalysis(res.data.analysis);
+            } else {
+                setError(res.data.message || "Analysis not found");
+            }
+        } catch (error: any) {
+            console.error(
+                "Fetch analysis error:",
+                error.response?.data || error.message
+            );
+
+            setError(
+                error.response?.data?.message ||
+                "Failed to load analysis"
+            );
+        }
+
+        setLoading(false);
     };
 
     const getScoreClass = (s: number) => {
